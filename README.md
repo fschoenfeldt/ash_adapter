@@ -76,21 +76,21 @@ MyApp.Weather.forecast!("Berlin")
 
 ## Options
 
-| Option          | Meaning                                                                |
-| --------------- | ---------------------------------------------------------------------- |
-| `otp_app`       | Application whose env holds the adapter, read on every call.           |
-| `config_key`    | Key in the application env. Defaults to the resource module.           |
+| Option          | Meaning                                                               |
+| --------------- | --------------------------------------------------------------------- |
+| `otp_app`       | Application whose env holds the adapter, read on every call.          |
+| `config_key`    | Key in the application env. Defaults to the resource module.          |
 | `default`       | Adapter used when the application env has none.                       |
-| `module`        | Fixed adapter, skips the application env. Excludes `otp_app`.          |
-| `pass_context?` | Pass the action context (actor, tenant, …) as last callback argument.  |
+| `module`        | Fixed adapter, skips the application env. Excludes `otp_app`.         |
+| `pass_context?` | Pass the action context (actor, tenant, …) as last callback argument. |
 
 Without an adapter the action raises.
 
 ## Verifying adapters
 
 `AshAdapter.resolve/1` returns the adapter currently configured for a resource.
-`AshAdapter.verify/1` checks that it is available and exports every callback. `mix ash_adapter.verify` does this for all resources of the project, e.g. in
-`.check.exs`:
+`AshAdapter.verify/1` checks that it is available and exports every callback.
+`mix ash_adapter.verify` does this for all resources of the project, e.g. in `.check.exs`:
 
 ```elixir
 {:ash_adapter, "mix ash_adapter.verify", env: %{"MIX_ENV" => "dev"}}
@@ -98,3 +98,27 @@ Without an adapter the action raises.
 
 It reads the application env of the current `MIX_ENV`, so mocks defined in `test_helper.exs`
 are not visible to it.
+
+## Usage rules for agents
+
+The package ships `usage-rules.md` and the skill `create-ash-adapter` (wrap an external system in
+a resource, or add another adapter). Install them with
+[usage_rules](https://hexdocs.pm/usage_rules):
+
+```elixir
+# mix.exs
+def project do
+  [
+    ...
+    usage_rules: [
+      file: "AGENTS.md",
+      usage_rules: [:ash_adapter],
+      skills: [package_skills: [:ash_adapter]]
+    ]
+  ]
+end
+```
+
+```bash
+mix usage_rules.sync
+```
