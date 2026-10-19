@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    env:
+      # one build for all tools instead of dev + test
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: strict
+
+      - uses: actions/cache@v5
+        with:
+          path: |
+            deps
+            _build
+            priv/plts
+          key: mix-${{ runner.os }}-${{ hashFiles('.tool-versions', 'mix.lock') }}
+          restore-keys: mix-${{ runner.os }}-
+
+      - run: mix deps.get
+
+      - run: mix check --format github
