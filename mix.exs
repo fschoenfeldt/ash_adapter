@@ -2,6 +2,7 @@ defmodule AshAdapter.MixProject do
   use Mix.Project
 
   @version "0.1.0"
+  @source_url "https://github.com/fschoenfeldt/ash_adapter"
 
   def project do
     [
@@ -12,6 +13,12 @@ defmodule AshAdapter.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       description: "Swappable adapters for Ash generic actions, in the style of Knigge.",
+      source_url: @source_url,
+      package: [
+        files: ~w(lib .formatter.exs mix.exs README.md LICENSE usage-rules.md usage-rules),
+        licenses: ["MIT"],
+        links: %{"GitHub" => @source_url}
+      ],
       docs: [main: "readme", extras: ["README.md"], source_ref: "v#{@version}"],
       dialyzer: [plt_local_path: "priv/plts", plt_core_path: "priv/plts", plt_add_apps: [:mix]]
     ]
