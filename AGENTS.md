@@ -31,6 +31,9 @@ no runtime dependencies besides `ash` and `spark`.
 - The transformer reads options with `Spark.Dsl.Transformer`; resolve modules only at runtime
   (dispatch, verify), never at compile time, to avoid compile-time dependencies on adapters.
 - Configuration in `config/config.exs` is only for this library's tests; consumers don't load it.
+- `CHANGELOG.md` follows Keep a Changelog. Within each change type (`Added`, `Changed`, …)
+  group entries under `####` headings per public module or mix task (e.g. `` `AshAdapter` ``,
+  `` `AshAdapter.Error` ``); changes without a module get a plain heading. Keep entries short.
 
 ## Tests
 

@@ -15,11 +15,12 @@ defmodule AshAdapter.MixProject do
       description: "Swappable adapters for Ash generic actions, in the style of Knigge.",
       source_url: @source_url,
       package: [
-        files: ~w(lib .formatter.exs mix.exs README.md LICENSE usage-rules.md usage-rules),
+        files:
+          ~w(lib .formatter.exs mix.exs README.md CHANGELOG.md LICENSE usage-rules.md usage-rules),
         licenses: ["MIT"],
         links: %{"GitHub" => @source_url}
       ],
-      docs: [main: "readme", extras: ["README.md"], source_ref: "v#{@version}"],
+      docs: [main: "readme", extras: ["README.md", "CHANGELOG.md"], source_ref: "v#{@version}"],
       dialyzer: [plt_local_path: "priv/plts", plt_core_path: "priv/plts", plt_add_apps: [:mix]]
     ]
   end
