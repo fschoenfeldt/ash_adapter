@@ -11,7 +11,9 @@ no runtime dependencies besides `ash` and `spark`.
   without `run`, evaluates one `@callback` per dispatched action into the resource, persists
   `:ash_adapter_source` and `:ash_adapter_callbacks`, validates `otp_app` xor `module`.
 - `lib/ash_adapter/dispatch.ex` – `Ash.Resource.Actions.Implementation` that resolves the adapter
-  and calls it with the arguments in declaration order (plus context with `pass_context?`).
+  and calls it with the arguments in declaration order (plus context with `pass_context?`);
+  wraps a returned `{:error, reason}` in `AshAdapter.Error`.
+- `lib/ash_adapter/error.ex` – `AshAdapter.Error` (class `:unknown`), keeps the adapter's `reason`.
 - `lib/ash_adapter/typespec.ex` – Ash type → quoted typespec; unknown types become `term()`.
 - `lib/mix/tasks/ash_adapter.verify.ex` – `mix ash_adapter.verify` over all resources of the app.
 - `usage-rules.md`, `usage-rules/skills/` – rules and skills shipped to consumers via `usage_rules`.

@@ -39,6 +39,24 @@ defmodule AshAdapterTest do
       assert Exception.message(error) =~ "offline"
     end
 
+    test "keeps the reason of implementation errors" do
+      expect(WeatherMock, :forecast, fn _city, _days -> {:error, :offline} end)
+
+      assert {:error,
+              %Ash.Error.Unknown{
+                errors: [%AshAdapter.Error{reason: :offline, action: :forecast}]
+              }} = Weather.forecast("Berlin")
+    end
+
+    test "passes exceptions returned by the implementation on" do
+      expect(WeatherMock, :forecast, fn _city, _days ->
+        {:error, %RuntimeError{message: "offline"}}
+      end)
+
+      assert {:error, %Ash.Error.Unknown{errors: [%Ash.Error.Unknown.UnknownError{}]}} =
+               Weather.forecast("Berlin")
+    end
+
     test "keeps actions with their own run" do
       assert Weather.local!() == "local"
     end

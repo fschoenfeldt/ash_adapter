@@ -86,6 +86,21 @@ MyApp.Weather.forecast!("Berlin")
 
 Without an adapter the action raises.
 
+## Errors
+
+An adapter's `{:error, reason}` reaches the caller as `AshAdapter.Error` with the original
+`reason`, inside an `Ash.Error.Unknown`, so callers can still match on it:
+
+```elixir
+case MyApp.Weather.forecast("Berlin") do
+  {:ok, forecast} -> forecast
+  {:error, %Ash.Error.Unknown{errors: [%AshAdapter.Error{reason: :unknown_city}]}} -> "no such city"
+  {:error, error} -> raise error
+end
+```
+
+Reasons that are already exceptions are passed on to Ash unchanged.
+
 ## Verifying adapters
 
 `AshAdapter.resolve/1` returns the adapter currently configured for a resource.

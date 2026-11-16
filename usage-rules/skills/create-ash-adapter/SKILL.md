@@ -71,7 +71,9 @@ end
 
 - One function per dispatched action, arguments in the action's declaration order.
 - Return `{:ok, value} | {:error, reason}`, or `:ok | {:error, reason}` without return type.
-- Map external errors to `{:error, reason}`; don't raise for expected failures.
+- Map external errors to `{:error, reason}`; don't raise for expected failures. Callers get the
+  `reason` back as `%AshAdapter.Error{reason: reason}` inside an `Ash.Error.Unknown`.
+- Outcomes other than `{:ok, _}`/`{:error, _}` (e.g. `{:warning, _}`) belong into the value.
 - To switch environments, point the config (e.g. `config/dev.exs`) at the new adapter.
 
 ## 4. Tests
