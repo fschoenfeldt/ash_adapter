@@ -99,6 +99,13 @@ case MyApp.Weather.forecast("Berlin") do
 end
 ```
 
+`AshAdapter.reason/1` takes the reason out of such an error and returns any other error
+unchanged, e.g. to keep the plain `{:error, reason}` of a former behaviour:
+
+```elixir
+with {:error, error} <- MyApp.Weather.forecast("Berlin"), do: {:error, AshAdapter.reason(error)}
+```
+
 Reasons that are already exceptions are passed on to Ash unchanged.
 
 ## Verifying adapters

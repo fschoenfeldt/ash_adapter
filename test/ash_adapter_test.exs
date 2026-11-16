@@ -48,6 +48,14 @@ defmodule AshAdapterTest do
               }} = Weather.forecast("Berlin")
     end
 
+    test "reason/1 unwraps the reason of implementation errors" do
+      expect(WeatherMock, :forecast, fn _city, _days -> {:error, :offline} end)
+
+      assert {:error, error} = Weather.forecast("Berlin")
+      assert AshAdapter.reason(error) == :offline
+      assert AshAdapter.reason(:other) == :other
+    end
+
     test "passes exceptions returned by the implementation on" do
       expect(WeatherMock, :forecast, fn _city, _days ->
         {:error, %RuntimeError{message: "offline"}}

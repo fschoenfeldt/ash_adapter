@@ -50,7 +50,8 @@ Options of the `adapter` section:
   declaration order (plus the context with `pass_context?`).
 - Return `{:ok, value}` or `{:error, reason}`; actions without return type return `:ok` or `{:error, reason}`.
 - The caller gets `{:error, %Ash.Error.Unknown{errors: [%AshAdapter.Error{reason: reason}]}}`; match on
-  `reason` there instead of parsing the error message. Exception reasons are passed on unchanged.
+  `reason` there instead of parsing the error message, or unwrap it with `AshAdapter.reason(error)`.
+  Exception reasons are passed on unchanged.
 - A generic action can't return anything else (e.g. `{:warning, _}`): model such outcomes as part of the value.
 - Callbacks are typed from the action (`String.t()`, `integer() | nil`, …); keep the adapter's
   `@spec`s in line, Hammox checks mocks against them. Unions, enums, embedded resources and

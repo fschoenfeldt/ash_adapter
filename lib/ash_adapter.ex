@@ -54,6 +54,18 @@ defmodule AshAdapter do
     ],
     transformers: [AshAdapter.Transformer]
 
+  @doc """
+  The `reason` an adapter returned with `{:error, reason}`, taken from the error of a dispatched
+  action; any other error is returned unchanged.
+
+      {:error, error} = MyApp.Weather.forecast("Atlantis")
+      AshAdapter.reason(error)
+      #=> :unknown_city
+  """
+  @spec reason(term()) :: term()
+  def reason(%Ash.Error.Unknown{errors: [%AshAdapter.Error{reason: reason}]}), do: reason
+  def reason(error), do: error
+
   @doc "The adapter currently configured for the resource."
   @spec resolve(Ash.Resource.t()) :: {:ok, module()} | {:error, String.t()}
   def resolve(resource) do
